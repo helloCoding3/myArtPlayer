@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>xiguaPlayer</title>
+    <style type="text/css">
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        overflow: hidden;
+      }
+      body {
+        display: flex;
+      }
+      #mse {
+        flex: auto;
+      }
+      .customclass {
+        background-color: red;
+        height: 1px;
+        width: 1px;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.byted-static.com/xgplayer/3.0.10/dist/index.min.css"
+    />
+    <script type="text/javascript">
+      document.addEventListener("ready", () => {
+        const resizeObserver = new ResizeObserver(() => {
+          document.getElementById("mse").style.height =
+            document.body.clientHeight + "px";
+        });
+        resizeObserver.observe(document.body);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="mse"></div>
+    <script
+      src="https://unpkg.byted-static.com/xgplayer/3.0.10/dist/index.min.js"
+      charset="utf-8"
+    ></script>
+    <script
+      src="https://unpkg.byted-static.com/xgplayer-mp4/3.0.10/dist/index.min.js"
+      charset="utf-8"
+    ></script>
+    <script
+      src="https://unpkg.byted-static.com/xgplayer-hls/3.0.10/dist/index.min.js"
+      charset="utf-8"
+    ></script>
+    <script type="text/javascript">
+      const urlpath = window.location;
+      // console.log('urlpath :>> ', urlpath.search.replace('?url=', ''));
+      const playurl = urlpath.search.replace("?url=", "");
+      // console.log('playurl :>> ', playurl);
+      let player = "";
+      const puboptions = {
+        id: "mse",
+        autoplay: true,
+        volume: 0.3,
+        url: playurl,
+        playsinline: true,
+        height: window.innerHeight,
+        width: window.innerWidth,
+        whitelist: [""],
+        miniprogress: true,
+        progress: true,
+        controls: {
+          mode: "normal",
+        },
+        commonStyle: {
+          // 播放完成部分进度条底色
+          playedColor: "#ef4444",
+          // 进度条底色
+          progressColor: "rgba(255, 255, 255, 0.3)",
+        },
+        download: true, //显示下载按钮
+      };
+      if (/m3u8/gi.test(playurl)) {
+        player = new Player({
+          ...puboptions,
+          plugins: [window.HlsPlayer],
+        });
+      } else {
+        player = new Player({
+          ...puboptions,
+        });
+      }
+    </script>
+  </body>
+</html>
